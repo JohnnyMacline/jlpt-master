@@ -2510,7 +2510,18 @@ function bindMock(el){
     else if(a === 'retry'){ const r = md.results[set]; if(r && r.wrongQ && r.wrongQ.length) mockStart(set, {retry:r.wrongQ}); }
     else if(a === 'retryall'){ mockRetryAll(); }
     else if(a === 'wrongnote') go('wrong');
-    else if(a === 'pick'){ mockState.answers[mockState.idx] = i; mockSaveDraft(); renderMock(); }
+    else if(a === 'pick'){
+      if(mockState._lock) return;
+      const cur = mockState.idx;
+      mockState.answers[cur] = i; mockSaveDraft(); renderMock();
+      if(cur < mockState.order.length-1){
+        mockState._lock = true;
+        setTimeout(() => {
+          mockState._lock = false;
+          if(mockState.mode === 'exam' && mockState.idx === cur){ mockState.idx = cur+1; mockSaveDraft(); renderMock(); }
+        }, 280);
+      }
+    }
     else if(a === 'next'){ mockState.idx = Math.min(mockState.order.length-1, mockState.idx+1); mockSaveDraft(); renderMock(); }
     else if(a === 'prev'){ mockState.idx = Math.max(0, mockState.idx-1); mockSaveDraft(); renderMock(); }
     else if(a === 'goto'){ mockState.idx = i; mockSaveDraft(); renderMock(); }
