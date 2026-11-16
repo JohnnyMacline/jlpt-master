@@ -2481,6 +2481,21 @@ function mockReviewHtml(){
         + (q.t===4 ? `<div style="margin-top:6px;"><b>유의어</b> ${escapeHtml(v.jp)} ≒ ${escapeHtml(q.o[q.a])}</div>` : '')
         + `</div>`;
   }
+  if(my !== null && !ok){
+    const mine = q.o[my];
+    let hit = null;
+    if(q.t !== 5) hit = VOCAB.find(x => x.jp === mine) || (q.t === 1 ? VOCAB.find(x => x.kana === mine) : null);
+    let inner;
+    if(q.t === 5){
+      inner = `<b>내가 고른 ${my+1}번</b> 「${escapeHtml(mine)}」<br><span style="color:#92400e">이 문장은 「${escapeHtml(q.q)}」의 쓰임이 어색해요. 올바른 쓰임은 정답 문장을 확인하세요.</span>`;
+    }else if(hit){
+      inner = `<b>내가 고른 ${my+1}번</b> ${escapeHtml(hit.jp)}${hit.kana && hit.kana!==hit.jp ? '【'+escapeHtml(hit.kana)+'】' : ''} — ${escapeHtml(hit.mean)}`
+            + (hit.ex ? `<br>${escapeHtml(hit.ex)}<br><span style="color:#92400e">${escapeHtml(hit.exMean||'')}</span>` : '');
+    }else{
+      inner = `<b>내가 고른 ${my+1}번</b> 「${escapeHtml(mine)}」<br><span style="color:#92400e">실제로 쓰이지 않는 형태예요. 헷갈리게 만든 보기예요.</span>`;
+    }
+    why += `<div class="exp-box show" style="border-color:var(--ng);margin-top:8px;"><div class="exp-ko" style="color:var(--ng);">✖ 오답 풀이</div><div>${inner}</div></div>`;
+  }
   return `
     <div class="mk-top"><span class="mk-title">해설 · ${k+1}/${total}</span><span class="mk-badge ${ok?'ok':'ng'}">${ok?'정답':(my===null?'미응답':'오답')}</span></div>
     <div class="progress"><div class="progress-fill" style="width:${(k+1)/total*100}%"></div></div>
