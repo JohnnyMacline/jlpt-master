@@ -2427,17 +2427,14 @@ function mockExamHtml(){
       ${body}
       <div class="choices">${opts}</div>
     </div>
-    <details class="mk-jump"><summary>🧭 문항 이동 · 푼 문제 ${mockState.answers.filter(a=>a!==null).length}/${total}</summary>
+    <details class="mk-jump"><summary>🧭 문항 이동 · 건너뛴 문제 확인 · 푼 문제 ${mockState.answers.filter(a=>a!==null).length}/${total}</summary>
       <div class="mk-grid">${grid}</div>
       <div class="btn-row" style="margin-top:10px;">
         <button class="btn btn-soft" data-mk="submit">지금 채점</button>
         <button class="btn btn-soft" data-mk="exit">나가기</button>
       </div>
     </details>
-    <div class="mk-sticky">
-      <button class="btn btn-soft" data-mk="prev" ${k===0?'disabled':''}>← 이전</button>
-      ${k < total-1 ? `<button class="btn btn-primary" data-mk="next">다음 →</button>` : `<button class="btn btn-ok" data-mk="submit">채점하기</button>`}
-    </div>`;
+    ${k === total-1 ? `<div class="mk-sticky"><button class="btn btn-ok" data-mk="submit">채점하기</button></div>` : ''}`;
 }
 
 function mockResultHtml(){
