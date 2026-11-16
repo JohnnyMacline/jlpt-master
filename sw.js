@@ -1,5 +1,5 @@
 // JLPT 마스터 서비스워커 · 오프라인 지원
-const CACHE = 'jlpt-master-v1';
+const CACHE = 'jlpt-master-v2';
 const CORE = ['./', './index.html', './manifest.webmanifest'];
 
 self.addEventListener('install', e => {
